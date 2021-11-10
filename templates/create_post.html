@@ -1,0 +1,22 @@
+<!Doctype html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+    <title>Your Page</title>
+</head>
+<body bgcolor="orange">
+<h1 > Hello {{name}}!</h1>
+
+<form action="/posts" method="POST">
+        <h2>Create New Post</h2><br>
+    <h3>Title:</h3>
+    <input type="text" name ='title'><br>
+    <h3>Type body here:</h3>
+    <input type="text" name ='body'><br>
+        <h3>Date:</h3>
+    <input type="text" name ='date'><br>
+    <input type="submit" value="POST">
+</form>
+{{ info }}
+</body>
+</html>

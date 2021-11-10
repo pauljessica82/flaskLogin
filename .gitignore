@@ -1,0 +1,6 @@
+.idea
+*.db
+*.xlsx
+*.pyc
+__pycache__
+sqlite
