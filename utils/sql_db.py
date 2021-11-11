@@ -26,7 +26,8 @@ class SqlDatabase:
         return self.conn.cursor().lastrowid
 
     def retrieve_user(self, username):
-        self.conn.cursor().execute("SELECT first_name, last_name, username, password FROM users WHERE username=?", [username])
+        self.conn.cursor().execute("""SELECT first_name, last_name, username, password FROM users 
+                                    WHERE username=?", [username]""")
         user = self.conn.cursor().fetchone()
         # self.conn.close()
         return user
