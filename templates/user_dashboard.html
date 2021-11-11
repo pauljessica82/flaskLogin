@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+User Dashboard Page
+{% endblock %}
+
+{% block body %}
+<h1>Welcome {{ name }}</h1>
+<h1><a href="{{ url_for('articles') }}"> See Your Posts </a></h1>
+<h1><a href="{{ url_for('create_post') }}"> Create New Post </a></h1>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home Page
+{% endblock %}
+
+{% block body %}
+<h1>This is the HOME PAGE</h1>
+<h1><a href="{{ url_for('valid_login') }}"> Login </a></h1>
+<h1><a href="{{ url_for('register') }}"> Create New Account </a></h1>
+
+{% endblock %}
