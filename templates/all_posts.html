@@ -1,18 +1,24 @@
 {% extends 'base.html' %}
 
-{% block title %} Post Page {% endblock %}
+{% block title %} Blog Page {% endblock %}
 
 {% block body %}
 <H2>ALL POSTS</H2>
-{{ results }}
 
-{% for message in messages %}
 
-{{ message.title }}
-{{ message.body }}
-{{ message.date }}
+<h2>{{ posts[0] }}</h2>
+{{ content[0] }}
+<br> </br>
+<h2>{{ posts[1] }}</h2>
+{{ content[1] }}
+<br> </br>
+<h2>{{ posts[2] }}</h2>
+{{ content[2] }}
 
-{% endfor %}
+<h2>{{ posts[3] }}</h2>
+{{ content[3] }}
+
+
 
 
 {% endblock %}

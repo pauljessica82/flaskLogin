@@ -7,23 +7,23 @@
 <body bgcolor="orange">
 <form action="/register" method="post">
      <h2></h2>First Name:<br>
-    <input type="text" name ='first_name'><br>
+    <input type="text" name ='first_name' required><br>
     Last Name:<br>
-    <input type="text" name="last_name" ><br>
+    <input type="text" name="last_name" required><br>
         <h2></h2> Email:<br>
-    <input type="text" name ='email'><br>
+    <input type="text" name ='email' required><br>
     Phone:<br>
-    <input type="text" name="phone"  ><br><br>
+    <input type="text" name="phone required><br><br>
     Create Username:<br>
     <input type="text" name="username" ><br><br>
     Create Password:<br>
-    <input type="text" name="password" ><br><br>
+    <input type="password" name="password" ><br><br>
      Confirm Password:<br>
-    <input type="text" name="confirmed_password" ><br><br>
+    <input type="password" name="confirmed_password" ><br><br>
     <input type="submit" value="SUBMIT">
 </form>
 
-<h1 > {{info}}</h1>
+<h1 > {{info}} </h1>
 
 </body>
 </html>

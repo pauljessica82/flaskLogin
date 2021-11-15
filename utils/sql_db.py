@@ -21,22 +21,14 @@ class SqlDatabase:
         self.conn.commit()
         return self.conn.cursor().lastrowid
 
-    def return_user_id(self, user):
-        user = self.retrieve_user()
-        return self.conn.cursor().lastrowid
-
-    def retrieve_user(self, username):
-        self.conn.cursor().execute("""SELECT first_name, last_name, username, password FROM users 
-                                    WHERE username=?", [username]""")
-        user = self.conn.cursor().fetchone()
-        # self.conn.close()
-        return user
-
-    def create_message(self, body, title, date):
+    def create_message(self, title, body, date):
         self.conn.cursor().execute("""INSERT INTO messages ( user_id, title, body, date) 
                                 VALUES ((SELECT MAX(id) from users), ?, ?, ?)""", (title, body, date,))
         self.conn.commit()
         return self.conn.cursor().lastrowid
+
+
+
 
 
 def main():

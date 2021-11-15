@@ -4,7 +4,7 @@ from utils.excel_db import ExcelDatabase as exceldb
 import openpyxl as xl
 
 app = Flask(__name__)
-
+# adding secret key
 database = SqlDatabase('utils/login.db')
 
 
@@ -23,15 +23,24 @@ def register():
         phone = request.form.get('phone')
         username = request.form.get('username')
         password = request.form.get('password')
+        confirmed_password = request.form.get('confirmed_password')
         user = (first_name, last_name, email, phone, username, password)
-        if not (first_name and last_name and email and phone and username and password):
+        # database.conn.cursor().execute('SELECT username FROM users')
+        # existing_usernames = database.conn.cursor().fetchall()
+        if not first_name and last_name and email and phone and username and password:
             return render_template('create_user.html', info="You are missing one or more fields")
+        # # check if username is already taken
+        # elif username in existing_usernames:
+        #     return render_template('create_user.html', info="Username is already taken.")
+        # elif password != confirmed_password:
+        #     return render_template('create_user.html', info="Password and confirmed password do not match.")
         else:
             database.insert_user(user)
             return redirect(url_for('dashboard', name=username))
     return render_template('create_user.html')
 
 
+# do not allow user to go to page without first signing in
 @app.route('/dashboard', methods=['POST', 'GET'])
 def dashboard():
     return render_template('user_dashboard.html')
@@ -39,23 +48,29 @@ def dashboard():
 
 @app.route('/create_post', methods=['POST', 'GET'])
 def create_post():
-    date = request.form.get('date')
-    title = request.form.get('title')
-    body = request.form.get('body')
-    # user_id = (database.conn.cursor().execute('SELECT MAX(id) from users'))
-    if not (title and body and date):
-        return render_template('create_post.html', info='You are missing one or more fields')
-    else:
-        database.create_message(date, title, body)
-        return redirect('/all_my_posts')
+    if request.method == 'POST':
+        title = request.form.get('title')
+        body = request.form.get('body')
+        date = request.form.get('date')
+        if not (title and body and date):
+            return render_template('create_post.html', info='You are missing one or more fields')
+        else:
+            database.create_message(title, body, date)
+            return redirect(url_for('articles'))
+    return render_template('create_post.html')
 
 
 @app.route('/articles', methods=['POST', 'GET'])
 def articles():
-    query1 = database.conn.cursor().execute("""SELECT title, body from messages 
+    posts = []
+    # y u showing me everyone posts
+    query1 = database.conn.cursor().execute("""SELECT title from messages 
                                      WHERE messages.user_id in (SELECT users.id FROM users)""")
-    messages = query1.fetchall()
-    return render_template('all_posts.html', results=messages)
+    query2 = database.conn.cursor().execute("""SELECT body from messages 
+                                        WHERE messages.user_id in (SELECT users.id FROM users)""")
+    posts = query1.fetchall()
+    content = query2.fetchall()
+    return render_template('all_posts.html', posts=posts, content=content)
 
 
 @app.route('/login', methods=['POST', 'GET'])
