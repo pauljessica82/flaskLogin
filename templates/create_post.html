@@ -1,11 +1,8 @@
-<!Doctype html>
-<html lang="en">
-<head>
-     <meta charset="UTF-8">
-    <title>Your Page</title>
-</head>
-<body bgcolor="orange">
+{% extends 'base.html' %}
 
+{% block title %} Create Post Page {% endblock %}
+
+{% block body %}
 
 <form action="/create_post" method="POST">
         <h2>Create New Post</h2><br>
@@ -20,5 +17,5 @@
     <input type="submit" value="POST">
 </form>
 {{ info }}
-</body>
-</html>
+
+{% endblock %}

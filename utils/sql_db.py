@@ -9,6 +9,17 @@ class SqlDatabase:
         except Error as e:
             print(e)
 
+    def grab_all_posts(self):
+        # messages = self.conn.cursor().execute('SELECT * FROM messages').fetchall()
+        user_id = str((self.conn.cursor().execute('SELECT id  FROM users ')))
+        message_user_id = str((self.conn.cursor().execute('SELECT user_id FROM messages')))
+        messages = self.conn.cursor().execute("""SELECT users.first_name, users.last_name, messages.title, messages.body,
+                                       messages.date FROM users INNER JOIN messages ON ? = ?; """,(user_id, message_user_id,)).fetchall()
+        return messages
+
+
+
+
     def create_table(self, create_table_sql):
         try:
             self.conn.cursor().execute(create_table_sql)
@@ -21,18 +32,14 @@ class SqlDatabase:
         self.conn.commit()
         return self.conn.cursor().lastrowid
 
-    def create_message(self, title, body, date):
+    def create_message(self, user_id, title, body, date):
         self.conn.cursor().execute("""INSERT INTO messages ( user_id, title, body, date) 
-                                VALUES ((SELECT MAX(id) from users), ?, ?, ?)""", (title, body, date,))
+                                VALUES(?, ?, ?, ?)""", (str(user_id), title, body, date,))
         self.conn.commit()
         return self.conn.cursor().lastrowid
 
 
-
-
-
 def main():
-
     sql_create_user_table = """ CREATE TABLE IF NOT EXISTS users (
                                         id integer PRIMARY KEY,
                                         first_name text NOT NULL,
@@ -58,4 +65,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
