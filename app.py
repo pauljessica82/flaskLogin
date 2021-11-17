@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, redirect, url_for, session
+from datetime import date as dt
 from utils.sql_db import SqlDatabase
 from utils.excel_db import ExcelDatabase as exceldb
 import openpyxl as xl
@@ -27,13 +28,13 @@ def user():
 @app.route('/logout')
 def logged_out():
     logout()
+    return render_template('logged_out.html')
 
 
 @app.route('/home')
 @app.route('/')
 def hello():
     all_posts = database.grab_all_posts()
-    print(all_posts)
     return render_template('index.html', all_posts=all_posts)
 
 
@@ -63,41 +64,50 @@ def register():
     return render_template('create_user.html')
 
 
+def redirect_anon(func_view):
+    def _replacemen_view():
+        if not check():
+            return redirect(url_for('valid_login'))
+
+        return func_view()
+
+    _replacemen_view.__name__ = func_view.__name__
+
+    return _replacemen_view
+
+
 # do not allow user to go to page without first signing in
 @app.route('/dashboard', methods=['POST', 'GET'])
+@redirect_anon
 def dashboard():
-    if not check():
-        return redirect(url_for('valid_login'))
     return render_template('user_dashboard.html')
 
 
 @app.route('/create_post', methods=['POST', 'GET'])
+@redirect_anon
 def create_post():
-    if not check():
-        return redirect(url_for('valid_login'))
     if request.method == 'POST':
         user_id = user()
         title = request.form.get('title')
         body = request.form.get('body')
-        date = request.form.get('date')
-        if not (title and body and date):
+        if not (title and body):
             return render_template('create_post.html', info='You are missing one or more fields')
         else:
+            date = dt.today().strftime("%B %d, %Y")
             database.create_message(user_id, title, body, date)
             return redirect(url_for('articles'))
     return render_template('create_post.html')
 
 
 @app.route('/articles', methods=['POST', 'GET'])
+@redirect_anon
 def articles():
-    if not check():
-        return redirect(url_for('valid_login'))
-    user_id = str(user())
-    posts = database.conn.cursor().execute('SELECT title, body, date FROM messages WHERE user_id = ?', (user_id,)).fetchall()
-    row = database.conn.cursor().execute('SELECT title, body, date FROM messages WHERE user_id = ?', (user_id,)).fetchone()
+    user_id = user()
+    posts = database.conn.cursor().execute('SELECT title, body, date FROM messages WHERE user_id = ?',
+                                           (user_id,)).fetchall()
     if not posts:
         return render_template('user_dashboard.html', info="No posts to show!! Please Create New Post")
-    return render_template('all_posts.html', posts=posts, row=row)
+    return render_template('my_posts.html', posts=posts)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -106,34 +116,16 @@ def valid_login():
         username = request.form.get('username')
         password = request.form.get('password')
         user_id = database.conn.cursor().execute('SELECT id FROM users where username = ? and password = ?',
-                                              [username, password]).fetchone()
+                                                 [username, password]).fetchone()
+        # (id, user)
         if not (username and password):
             return render_template('login.html', info="You are missing one or more fields")
         elif not user_id:
             return render_template('login.html', info='Invalid Credentials')
         else:
-            allow(user_id)
+            allow(user_id[0])
             return redirect(url_for('dashboard'))
     return render_template('login.html')
-
-
-# @app.route('/login', methods=['POST', 'GET'])
-# def login():
-#     username = request.form.get('username')
-#     password = request.form.get('password')
-#
-#     # is the page just opening
-#     # yes
-#     # > nothing
-#     if not (username and password):
-#         return render_template('login.html')
-#     #
-#     # no = logging in
-#     # > successful or not
-#     elif exceldb.invalid_credentials(username, password):
-#         return render_template('login.html', info="Invalid Credentials")
-#     else:
-#         return render_template('create_post.html', name=username)
 
 
 if __name__ == "__main__":

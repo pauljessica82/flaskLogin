@@ -5,9 +5,8 @@
 {% block body %}
 
 <H1>ALL POSTS</H1>
-{{ posts }}
-{{ row }}
- {% for post in posts %}
+
+
         {% for row in posts %}
                 <br>
             <h2>Title: {{ row[0] }}</h2>
@@ -15,7 +14,7 @@
             <h2>Date Created: {{ row[2] }}</h2>
                 <br>
         {% endfor %}
-{% endfor %}
+
 
 
 {% endblock %}

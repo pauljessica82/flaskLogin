@@ -11,10 +11,11 @@ class SqlDatabase:
 
     def grab_all_posts(self):
         # messages = self.conn.cursor().execute('SELECT * FROM messages').fetchall()
-        user_id = str((self.conn.cursor().execute('SELECT id  FROM users ')))
-        message_user_id = str((self.conn.cursor().execute('SELECT user_id FROM messages')))
-        messages = self.conn.cursor().execute("""SELECT users.first_name, users.last_name, messages.title, messages.body,
-                                       messages.date FROM users INNER JOIN messages ON ? = ?; """,(user_id, message_user_id,)).fetchall()
+        messages = self.conn.cursor().execute("""
+        SELECT 
+            users.first_name, users.last_name, messages.title, messages.body, messages.date
+        FROM users INNER JOIN messages
+        ON users.id  = messages.user_id; """).fetchall()
         return messages
 
 
@@ -34,7 +35,7 @@ class SqlDatabase:
 
     def create_message(self, user_id, title, body, date):
         self.conn.cursor().execute("""INSERT INTO messages ( user_id, title, body, date) 
-                                VALUES(?, ?, ?, ?)""", (str(user_id), title, body, date,))
+                                VALUES(?, ?, ?, ?)""", (user_id, title, body, date,))
         self.conn.commit()
         return self.conn.cursor().lastrowid
 
