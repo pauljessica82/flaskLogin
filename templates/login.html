@@ -1,18 +1,15 @@
-<!Doctype html>
-<html lang="en">
-<head>
-     <meta charset="UTF-8">
-    <title>Login Page</title>
-</head>
-<body bgcolor="orange">
+{% extends 'base.html' %}
+
+{% block title %} Login Page {% endblock %}
+
+{% block body %}
 <form action="/login" method="post">
-        <h2></h2>Username:<br>
+        <h2>Username:</h2><br>
     <input type="text" name ='username'><br>
-    Password:<br>
-    <input name="password" ><br><br>
+    <h2>Password:</h2><br>
+    <input type="password" name="password" ><br><br>
 <input type="submit" value="Login">
 </form>
 <h1 >{{info}}</h1>
 
-</body>
-</html>
+{% endblock %}

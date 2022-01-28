@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %} My Blog Page {% endblock %}
+
+{% block body %}
+
+<H1>ALL POSTS</H1>
+
+
+        {% for row in posts %}
+                <br>
+            <h2>Title: {{ row[0] }}</h2>
+            <h2>Content: {{ row[1] }}</h2>
+            <h2>Date Created: {{ row[2] }}</h2>
+                <br>
+        {% endfor %}
+
+
+
+{% endblock %}

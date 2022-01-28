@@ -9,6 +9,18 @@ class SqlDatabase:
         except Error as e:
             print(e)
 
+    def grab_all_posts(self):
+        # messages = self.conn.cursor().execute('SELECT * FROM messages').fetchall()
+        messages = self.conn.cursor().execute("""
+        SELECT 
+            users.first_name, users.last_name, messages.title, messages.body, messages.date
+        FROM users INNER JOIN messages
+        ON users.id  = messages.user_id; """).fetchall()
+        return messages
+
+
+
+
     def create_table(self, create_table_sql):
         try:
             self.conn.cursor().execute(create_table_sql)
@@ -21,26 +33,14 @@ class SqlDatabase:
         self.conn.commit()
         return self.conn.cursor().lastrowid
 
-    def return_user_id(self, user):
-        user = self.retrieve_user()
-        return self.conn.cursor().lastrowid
-
-    def retrieve_user(self, username):
-        self.conn.cursor().execute("""SELECT first_name, last_name, username, password FROM users 
-                                    WHERE username=?", [username]""")
-        user = self.conn.cursor().fetchone()
-        # self.conn.close()
-        return user
-
-    def create_message(self, body, title, date):
+    def create_message(self, user_id, title, body, date):
         self.conn.cursor().execute("""INSERT INTO messages ( user_id, title, body, date) 
-                                VALUES ((SELECT MAX(id) from users), ?, ?, ?)""", (title, body, date,))
+                                VALUES(?, ?, ?, ?)""", (user_id, title, body, date,))
         self.conn.commit()
         return self.conn.cursor().lastrowid
 
 
 def main():
-
     sql_create_user_table = """ CREATE TABLE IF NOT EXISTS users (
                                         id integer PRIMARY KEY,
                                         first_name text NOT NULL,
@@ -66,4 +66,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
