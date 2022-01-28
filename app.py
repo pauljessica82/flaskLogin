@@ -1,12 +1,41 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+import os
+
+from flask import Flask, request, render_template, redirect, url_for, session, json
+
 from datetime import date as dt
+
 from utils.sql_db import SqlDatabase
 from utils.excel_db import ExcelDatabase as exceldb
+
 import openpyxl as xl
 
 app = Flask(__name__)
 app.secret_key = "__privatekey__"
 database = SqlDatabase('utils/login.db')
+
+
+@app.route('/projects/<title>')
+def project(title):
+    projects = get_static_json("static/projects/projects.json")["projects"]
+    in_project = next((p for p in projects if p['link'] == title), None)
+    if in_project is not None:
+        selected = in_project
+    return render_template('project.html', project=selected)
+
+def order_projects_by_weight(projects):
+    try:
+        return int(projects['weight'])
+    except KeyError:
+        return 0
+
+
+def get_static_file(path):
+    site_root = os.path.realpath(os.path.dirname(__file__))
+    return os.path.join(site_root, path)
+
+
+def get_static_json(path):
+    return json.load(open(get_static_file(path)))
 
 
 def allow(user_id):
@@ -31,11 +60,10 @@ def logged_out():
     return render_template('logged_out.html')
 
 
-@app.route('/home')
 @app.route('/')
+@app.route('/home')
 def hello():
-    all_posts = database.grab_all_posts()
-    return render_template('index.html', all_posts=all_posts)
+    return render_template('main_page.html')
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -49,15 +77,8 @@ def register():
         password = request.form.get('password')
         confirmed_password = request.form.get('confirmed_password')
         user = (first_name, last_name, email, phone, username, password)
-        # database.conn.cursor().execute('SELECT username FROM users')
-        # existing_usernames = database.conn.cursor().fetchall()
         if not first_name and last_name and email and phone and username and password:
             return render_template('create_user.html', info="You are missing one or more fields")
-        # # check if username is already taken
-        # elif username in existing_usernames:
-        #     return render_template('create_user.html', info="Username is already taken.")
-        # elif password != confirmed_password:
-        #     return render_template('create_user.html', info="Password and confirmed password do not match.")
         else:
             database.insert_user(user)
             return redirect(url_for('dashboard', name=username))
@@ -76,7 +97,6 @@ def redirect_anon(func_view):
     return _replacemen_view
 
 
-# do not allow user to go to page without first signing in
 @app.route('/dashboard', methods=['POST', 'GET'])
 @redirect_anon
 def dashboard():
@@ -103,11 +123,36 @@ def create_post():
 @redirect_anon
 def articles():
     user_id = user()
-    posts = database.conn.cursor().execute('SELECT title, body, date FROM messages WHERE user_id = ?',
-                                           (user_id,)).fetchall()
+    posts = database.grab_my_posts(user_id)
     if not posts:
         return render_template('user_dashboard.html', info="No posts to show!! Please Create New Post")
     return render_template('my_posts.html', posts=posts)
+
+
+@app.route('/update')
+@redirect_anon
+def edit_post():
+    return render_template('update_post.html')
+
+
+@app.route('/delete')
+@redirect_anon
+def delete_post():
+    user_id = user()
+    database.delete_post(user_id)
+    return redirect(url_for('articles'))
+
+
+@app.route('/projects')
+def projects():
+    data = get_static_json("static/projects/projects.json")['projects']
+    data.sort(key=order_projects_by_weight, reverse=True)
+
+    tag = request.args.get('tags')
+    if tag is not None:
+        data = [project for project in data if tag.lower() in [project_tag.lower() for project_tag in project['tags']]]
+
+    return render_template('projects.html', projects=data, tag=tag)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -115,9 +160,8 @@ def valid_login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        user_id = database.conn.cursor().execute('SELECT id FROM users where username = ? and password = ?',
-                                                 [username, password]).fetchone()
-        # (id, user)
+        user_id = database.grab_user_id(username, password)
+        print(user_id[0])
         if not (username and password):
             return render_template('login.html', info="You are missing one or more fields")
         elif not user_id:
