@@ -1,0 +1,109 @@
+{
+  "projects": [
+    {
+      "name": "Task Tracker",
+      "link": "ttracker",
+      "github": "https://github.com/pauljessica82/TaskTrackerAPI/tree/reactmerge",
+      "description": "A great simple project to get started with React and Vue. After building out the front end I used Django rest framework to build out the API. I used Celery to build out a task that checks the database every minute for active reminders. It then grabs the time of those reminders and then compares it to the current time. Twilio API is then used to send the reminder.",
+      "date": "January 2022",
+      "short": "A simple task tracking and reminder app that will send a notification for an active reminder at due time",
+      "status": "complete",
+      "weight": 7,
+      "tags": [
+        "react",
+        "api",
+        "vue"
+      ],
+      "videos": [
+        "<video width=\"530\" height=\"530\" onclick=\"this.play()\" autoplay muted><source src=\"../static/videos/twilio_ttrack_preview.mp4\" type=\"video/mp4\"></video>"
+      ],
+      "photos": [
+        "/static/projects/images/ttrack.png"
+      ]
+    },
+
+     {
+      "name": "Guess Number Game",
+      "link": "guessNumber",
+      "github": "https://github.com/pauljessica82/TaskTrackerAPI/tree/reactmerge",
+      "description": "Built with C# and Sql. User has to guess a number between 1 and 10. The fewer the guesses are, the more points the user racks up. After a game, the user can then add themselves to the leaderboard by just inputting their name. They can view the leaderboard to see where they rank.",
+      "date": "2021",
+      "short": "Fun simple game where user has to guess a number between 1 and 10, and try to beat their previous scores",
+      "status": "complete",
+      "weight": 7,
+      "tags": [
+        "c#",
+        "sql",
+        "game"
+      ],
+      "videos": [
+      ],
+      "photos": [
+        "/static/projects/images/guessNumber.png"
+      ]
+    },
+
+     {
+      "name": "Login & Register Form",
+      "link": "loginForm",
+      "github": "https://github.com/pauljessica82/TaskTrackerAPI/tree/reactmerge",
+      "description": "A great simple project to get started with React and Vue. After building out the front end I used Django rest framework to build out the API. I used Celery to build out a task that checks the database every minute for active reminders. It then grabs the time of those reminders and then compares it to the current time. Twilio API is then used to send the reminder.",
+      "date": "January 2022",
+      "short": "A simple task tracking and reminder app that will send a notification for an active reminder at due time",
+      "status": "complete",
+      "weight": 7,
+      "tags": [
+        "c#",
+        "form",
+        "sql"
+      ],
+      "videos": [
+      ],
+      "photos": [
+        "/static/projects/images/loginForm.png"
+      ]
+    },
+
+     {
+      "name": "Grocery Store",
+      "link": "pyShop",
+      "github": "https://github.com/pauljessica82/TaskTrackerAPI/tree/reactmerge",
+      "description": "A great simple project to get started with React and Vue. After building out the front end I used Django rest framework to build out the API. I used Celery to build out a task that checks the database every minute for active reminders. It then grabs the time of those reminders and then compares it to the current time. Twilio API is then used to send the reminder.",
+      "date": "January 2022",
+      "short": "A simple task tracking and reminder app that will send a notification for an active reminder at due time",
+      "status": "complete",
+      "weight": 7,
+      "tags": [
+        "django",
+        "python"
+      ],
+      "videos": [
+      ],
+      "photos": [
+        "/static/projects/images/pyShop.png"
+      ]
+    },
+
+         {
+      "name": "Snake Game",
+      "link": "snakeGame",
+      "github": "https://github.com/pauljessica82/TaskTrackerAPI/tree/reactmerge",
+      "description": "A great simple project to get started with React and Vue. After building out the front end I used Django rest framework to build out the API. I used Celery to build out a task that checks the database every minute for active reminders. It then grabs the time of those reminders and then compares it to the current time. Twilio API is then used to send the reminder.",
+      "date": "January 2022",
+      "short": "A simple task tracking and reminder app that will send a notification for an active reminder at due time",
+      "status": "complete",
+      "weight": 7,
+      "tags": [
+        "game",
+        "c#",
+        "sql"
+      ],
+      "videos": [
+        "<video width=\"530\" height=\"350\" onclick=\"this.play()\" autoplay muted><source src=\"../static/videos/snake_game.mp4\" type=\"video/mp4\"></video>"
+      ],
+      "photos": [
+        "/static/projects/images/snakeGame.png"
+      ]
+    }
+  ]
+}

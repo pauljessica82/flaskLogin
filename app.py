@@ -14,6 +14,19 @@ app.secret_key = "__privatekey__"
 database = SqlDatabase('utils/login.db')
 
 
+# landing pages and functions
+@app.route('/projects')
+def projects():
+    data = get_static_json("static/projects/projects.json")['projects']
+    data.sort(key=order_projects_by_weight, reverse=True)
+
+    tag = request.args.get('tags')
+    if tag is not None:
+        data = [project for project in data if tag.lower() in [project_tag.lower() for project_tag in project['tags']]]
+
+    return render_template('projects.html', projects=data, tag=tag)
+
+
 @app.route('/projects/<title>')
 def project(title):
     projects = get_static_json("static/projects/projects.json")["projects"]
@@ -21,6 +34,7 @@ def project(title):
     if in_project is not None:
         selected = in_project
     return render_template('project.html', project=selected)
+
 
 def order_projects_by_weight(projects):
     try:
@@ -38,6 +52,7 @@ def get_static_json(path):
     return json.load(open(get_static_file(path)))
 
 
+# blog related
 def allow(user_id):
     session['user_id'] = user_id
 
@@ -143,16 +158,10 @@ def delete_post():
     return redirect(url_for('articles'))
 
 
-@app.route('/projects')
-def projects():
-    data = get_static_json("static/projects/projects.json")['projects']
-    data.sort(key=order_projects_by_weight, reverse=True)
-
-    tag = request.args.get('tags')
-    if tag is not None:
-        data = [project for project in data if tag.lower() in [project_tag.lower() for project_tag in project['tags']]]
-
-    return render_template('projects.html', projects=data, tag=tag)
+@app.route('/blog')
+def blog_posts():
+    posts = database.grab_all_posts()
+    return render_template('index.html', all_posts=posts)
 
 
 @app.route('/login', methods=['POST', 'GET'])

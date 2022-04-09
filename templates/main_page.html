@@ -1,10 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base2.html" %}
+
+{% block head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+<link type="text/css" rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<script src='https://cdnjs.cloudflare.com/ajax/libs/typed.js/1.1.1/typed.min.js'></script>
+
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/home.css') }}">
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/home.js') }}"></script>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="wrapper fixed-wrapper">
+        <section id="terminal">
+            <div id="terminal-container">
+                <div class="terminal">
+                    <div class="window-title">
+                        <div class="win-buttons">
+                            <a id="close" class="button" href="#"></a>
+                            <a id="min" class="button" href="#"></a>
+                            <a id="max" class="button" href="#"></a>
+                        </div>
+                        <span class="title">oh-my-zsh</span>
+                    </div>
+                    <div class="message">
+                        <span class='prompt'><span class='user'>jessica</span><span class="at">@</span><span
+                                class="path">/home/paulj/</span>><span class="caret">$</span></span>
+                        <span class="typed"></span>
+                        <form>><span class="caret">$</span>
+                            &nbsp;<input type="text" name="response"/></form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="wrapper scroll-wrapper">
+        <div class="top-text">
+            <p class="text-title desktop-view">Jessica</p>
+            <p class="text-title desktop-view">Paul</p>
+            <p class="text-title mobile-view">Jessica Paul</p>
+            <div class="social-icons">
+                <a target="_blank" href="https://github.com/pauljessica82">
+                    <img class="title-logo" src="static/images/github.png">
+                </a>
+                <a target="_blank" href="https://www.linkedin.com/in/jessica-paul-a1ba6520b/">
+                    <img class="title-logo" src="static/images/linkedin.png">
+                </a>
+                <a target="_blank" href="mailto:jessiecodes380@gmail.com?Subject=Hello%20Jess%20-from-website">
+                    <img class="title-logo" src="static/images/gmail.png">
+                </a>
+            </div>
+        </div>
+<!--        <div class="middle-text">-->
+<!--            <p class="text-content">I am a creator at heart; from challenging myself to bring my programming ideas to life,-->
+<!--                to continually trying to improve my video editing skills-->
+<!--                to tinkering around with tunes on my acoustic guitar - I love to-->
+<!--                create and to build.</p>-->
+<!--            <p class="text-content">-->
+<!--                My passion for coding arose in an HTML class in 2018, when I first saw the words "Hello World" written out on my screen;-->
+<!--                all from a single line of code. That moment made an impression on me that in late 2021, I decided to go all in on pursuing this passion and begun-->
+<!--                the journey to learn how to code. Starting with a simple login form in C#, and then my first snake game, and then web apps in Django, and now to creating and deploying-->
+<!--                full stack projects: the journey has been more than worth it.-->
+<!--            </p>-->
+
+<!--            <p class="text-content">You can find me on <a href="https://www.linkedin.com/in/jessica-paul-a1ba6520b/">LinkedIn</a>,-->
+<!--                or email me <a href="mailto:jessiecodes380@gmail.com?Subject=Hello%20Jess%20-from-website" target="_top">here</a>.-->
+<!--            </p>-->
+
+<!--            <p class="text-content">Let's get in touch!</p>-->
+
+<!--            <p class="text-content">Jessica Paul</p>-->
+<!--            <br>-->
+        </div>
+    </div>
+</div>
+
+{% endblock %}

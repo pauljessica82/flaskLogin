@@ -5,16 +5,39 @@
 {% block body %}
 
 <H1>ALL POSTS</H1>
+<div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="card mt-4">
+          <div class="card-body">
+            {% for post in posts %}
+              <div class="card mt-3">
+                <div class="card-header">
+                  <div class="row">
+                      <div class="col"><strong>Title: {{ post[0] }}</strong>
+                        <div class="col text-right">
+                           <strong> Date Created: {{ post[2] }}
 
+                    </strong></div>
 
-        {% for row in posts %}
-                <br>
-            <h2>Title: {{ row[0] }}</h2>
-            <h2>Content: {{ row[1] }}</h2>
-            <h2>Date Created: {{ row[2] }}</h2>
-                <br>
-        {% endfor %}
+                    </div>
+                    <div class="col text-right">
 
+                      <a class="btn btn-primary" href="/edit?title={{post[1]}}&post={{post[2]}}&_id={{post[0]}}">Update</a>
+                      <a class="btn btn-danger" href="/delete">Delete</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  {{ post[1] }}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 {% endblock %}

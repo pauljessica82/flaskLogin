@@ -4,3 +4,7 @@
 *.pyc
 __pycache__
 sqlite
+static/projects/images/projects.json
+Dockerfile
+*.pyc
+*Lib

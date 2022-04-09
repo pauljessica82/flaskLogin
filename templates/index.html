@@ -1,24 +1,33 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 
-{% block title %}
-Home Page
+{% block head %}
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/projects.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/card.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/chip.css') }}">
 {% endblock %}
 
 {% block body %}
-<h1>This is the HOME PAGE</h1>
+<h1>Welcome to Blog</h1>
 
+            {% for post in all_posts %}
 
-{% for post in all_posts %}
-<!--        {% for post in all_posts %}-->
-                <br>
-            <h2>First Name: {{ post[0] }}</h2>
-            <h2>Last Name: {{ post[1] }}</h2>
-            <h2>Title: {{ post[2] }}</h2>
-            <h2>Content: {{ post[3] }}</h2>
-            <h2>Date: {{ post[4] }}</h2>
+                   First Name: {{ post[0] }}
+                      <a class="btn btn-primary" href="/edit?title={{post[1]}}&post={{post[2]}}&_id={{post[0]}}">Update</a>
+                      <a class="btn btn-danger" href="/delete/{{post[0]}}">Delete</a>
 
-                <br>
-<!--        {% endfor %}-->
+                  {{post[2][0:500]}}
+
 {% endfor %}
+
+
 
 {% endblock %}
