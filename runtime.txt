@@ -1,2 +1,2 @@
 GNU nano 4.3    runtime.txt
-python-3.10.3
+python-3.9.11
