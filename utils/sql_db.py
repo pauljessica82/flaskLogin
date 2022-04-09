@@ -9,6 +9,21 @@ class SqlDatabase:
         except Error as e:
             print(e)
 
+    def delete_post(self, user_id):
+        delete = self.conn.cursor().execute('DELETE FROM messages WHERE id = ? ', (messages.id,))
+        self.conn.commit()
+        return delete
+
+    def grab_user_id(self, username, password):
+        user_id = self.conn.cursor().execute('SELECT id FROM users where username = ? and password = ?',
+                                             [username, password]).fetchone()
+        return user_id
+
+    def grab_my_posts(self, user_id):
+        posts = self.conn.cursor().execute('SELECT title, body, date FROM messages WHERE user_id = ?',
+                                           (user_id,)).fetchall()
+        return posts
+
     def grab_all_posts(self):
         # messages = self.conn.cursor().execute('SELECT * FROM messages').fetchall()
         messages = self.conn.cursor().execute("""
@@ -17,9 +32,6 @@ class SqlDatabase:
         FROM users INNER JOIN messages
         ON users.id  = messages.user_id; """).fetchall()
         return messages
-
-
-
 
     def create_table(self, create_table_sql):
         try:
@@ -61,7 +73,7 @@ def main():
                                 );"""
     database = SqlDatabase('login.db')
     database.create_table(sql_create_user_table)
-    database.create_table(sql_create_messages_table)
+    database.create_table(sql_create_messages_table) 
 
 
 if __name__ == '__main__':
