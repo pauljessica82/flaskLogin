@@ -7,7 +7,7 @@ from datetime import date as dt
 # from utils.sql_db import SqlDatabase
 # from utils.excel_db import ExcelDatabase as exceldb
 
-import openpyxl as xl
+# import openpyxl as xl
 
 app = Flask(__name__)
 app.secret_key = "__privatekey__"
