@@ -17,7 +17,7 @@ database = SqlDatabase('utils/login.db')
 # landing pages and functions
 @app.route('/projects')
 def projects():
-    data = get_static_json("../static/projects/projects.json")['projects']
+    data = get_static_json("static/projects/projects.json")['projects']
     data.sort(key=order_projects_by_weight, reverse=True)
 
     tag = request.args.get('tags')
@@ -29,7 +29,7 @@ def projects():
 
 @app.route('/projects/<title>')
 def project(title):
-    projects = get_static_json("../static/projects/projects.json")["projects"]
+    projects = get_static_json("static/projects/projects.json")["projects"]
     in_project = next((p for p in projects if p['link'] == title), None)
     if in_project is not None:
         selected = in_project
