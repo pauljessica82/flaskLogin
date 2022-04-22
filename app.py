@@ -5,7 +5,7 @@ from flask import Flask, request, render_template, redirect, url_for, session, j
 from datetime import date as dt
 
 # from utils.sql_db import SqlDatabase
-from utils.excel_db import ExcelDatabase as exceldb
+# from utils.excel_db import ExcelDatabase as exceldb
 
 import openpyxl as xl
 
