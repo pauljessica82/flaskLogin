@@ -4,14 +4,14 @@ from flask import Flask, request, render_template, redirect, url_for, session, j
 
 from datetime import date as dt
 
-from utils.sql_db import SqlDatabase
+# from utils.sql_db import SqlDatabase
 from utils.excel_db import ExcelDatabase as exceldb
 
 import openpyxl as xl
 
 app = Flask(__name__)
 app.secret_key = "__privatekey__"
-database = SqlDatabase('utils/login.db')
+# database = SqlDatabase('utils/login.db')
 
 
 # landing pages and functions
