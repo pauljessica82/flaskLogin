@@ -37,7 +37,7 @@
         "game"
       ],
       "videos": [
-         "<video width=\"530\" height=\"530\"  autoplay muted><source src=\"../static/videos/guessNumber.mp4\" type=\"video/mp4\"></video>"
+         "<video width=\"530\" height=\"530\" onclick=\"this.play()\" autoplay muted><source src=\"../static/videos/guessNumber.mp4\" type=\"video/mp4\"></video>"
       ],
       "photos": [
         "/static/projects/images/guessNumber.png"
