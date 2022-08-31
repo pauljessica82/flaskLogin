@@ -163,8 +163,9 @@ def delete_post():
 
 @app.route('/blog')
 def blog_posts():
+    data = get_static_json("static/projects/projects.json")['projects']
     posts = database.grab_all_posts()
-    return render_template('index.html', all_posts=posts)
+    return render_template('index.html', all_posts=posts, projects=data)
 
 
 @app.route('/login', methods=['POST', 'GET'])

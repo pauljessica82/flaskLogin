@@ -16,18 +16,28 @@
 {% endblock %}
 
 {% block body %}
-<h1>Welcome to Blog</h1>
+<h1>Welcome to my Blog</h1>
 
             {% for post in all_posts %}
 
-                   First Name: {{ post[0] }}
-                      <a class="btn btn-primary" href="/edit?title={{post[1]}}&post={{post[2]}}&_id={{post[0]}}">Update</a>
-                      <a class="btn btn-danger" href="/delete/{{post[0]}}">Delete</a>
+<div class="card" style="width: 18rem;">
+    <div class="embed-responsive embed-responsive-4by3">
+     {% if 'photos' in project %}
 
-                  {{post[2][0:500]}}
+            <img class="card-img-top embed-responsive-item" src="{{project['photos'][0]}}" />
+            {% else %}
+            <img class="card-image top" width="265" src="/static/images/nature.jpg/">
 
-{% endfor %}
+    {% endif %}
 
 
+  <div class="card-body">
+    <h5 class="card-title"> {{post[2][0:500]}}</h5>
 
+     <a href="#" class="btn btn-primary">Read Full Article</a>
+  </div>
+  </div>
+</div>
+
+            {% endfor %}
 {% endblock %}
