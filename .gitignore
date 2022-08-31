@@ -1,5 +1,4 @@
 .idea
-*.db
 *.xlsx
 *.pyc
 __pycache__
@@ -8,4 +7,3 @@ static/projects/images/projects.json
 Dockerfile
 *.pyc
 *Lib
-utils
