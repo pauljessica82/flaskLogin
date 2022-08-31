@@ -4,14 +4,16 @@ from flask import Flask, request, render_template, redirect, url_for, session, j
 
 from datetime import date as dt
 
-# from utils.sql_db import SqlDatabase
+from utils.sql_db import SqlDatabase
 # from utils.excel_db import ExcelDatabase as exceldb
 
 # import openpyxl as xl
 
 app = Flask(__name__)
 app.secret_key = "__privatekey__"
-# database = SqlDatabase('utils/login.db')
+
+
+database = SqlDatabase('utils/login.db')
 
 
 # landing pages and functions
@@ -52,6 +54,12 @@ def get_static_json(path):
     return json.load(open(get_static_file(path)))
 
 
+@app.route('/')
+@app.route('/home')
+def hello():
+    return render_template('main_page.html')
+
+
 # blog related
 def allow(user_id):
     session['user_id'] = user_id
@@ -75,12 +83,6 @@ def logged_out():
     return render_template('logged_out.html')
 
 
-@app.route('/')
-@app.route('/home')
-def hello():
-    return render_template('main_page.html')
-
-
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     if request.method == 'POST':
@@ -100,6 +102,7 @@ def register():
     return render_template('create_user.html')
 
 
+# redirect anonymous user
 def redirect_anon(func_view):
     def _replacemen_view():
         if not check():
