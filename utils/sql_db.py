@@ -18,6 +18,7 @@ class SqlDatabase:
         self.conn.cursor().execute('''
         UPDATE messages SET title = ? , body = ?  WHERE messages.id = ?
         ''', new_post)
+        self.conn.commit()
         
     def delete_post(self, post_id):
         delete = self.conn.cursor().execute('DELETE FROM messages WHERE id = ? ', (post_id,))
