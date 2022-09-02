@@ -238,7 +238,8 @@ def valid_login():
         username = request.form.get('username')
         password = request.form.get('password')
         user_id = database.grab_user_id(username, password)
-        print(user_id[0])
+        if user_id:
+            print(user_id[0])
         if not (username and password):
             return render_template('login.html', info="You are missing one or more fields")
         elif not user_id:
