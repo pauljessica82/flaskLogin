@@ -16,28 +16,45 @@
 {% endblock %}
 
 {% block body %}
-<h1>Welcome to my Blog</h1>
 
-            {% for post in all_posts %}
+<style>
+  .card-body {
+     overflow: hidden;
+     white-space: nowrap;
+     text-overflow: ellipsis;
+     text-align: center
+}
+ #titleid {
+     overflow: hidden;
+     white-space: nowrap;
+     text-overflow: ellipsis;
+     text-align: center;
+     font-weight: bold;
+     text-transform: uppercase;
 
-<div class="card" style="width: 18rem;">
-    <div class="embed-responsive embed-responsive-4by3">
-     {% if 'photos' in project %}
+}
+</style>
 
-            <img class="card-img-top embed-responsive-item" src="{{project['photos'][0]}}" />
-            {% else %}
-            <img class="card-image top" width="265" src="/static/images/nature.jpg/">
+<h1> &nbsp; Welcome to my Blog</h1>
 
-    {% endif %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
 
+{% for post in all_posts %}
+  <div class="col">
+    <div class="card">
+       <div class="card-image waves-effect waves-block waves-light">
+            <img class="card-image activator" src="static/uploads/{{post[5]}}" />
 
-  <div class="card-body">
-    <h5 class="card-title"> {{post[2][0:500]}}</h5>
+        </div>
+      <div class="card-body">
+        <h5 class="card-title" id="titleid"> {{post[2][0:500]}} </h5>
+          <h6 class="card-text"> Author: {{post[0][0:500]}} {{post[1][0:500]}}</h6><br>
+        <a href="#" class="btn btn-primary">READ FULL ARTICLE</a>
 
-     <a href="#" class="btn btn-primary">Read Full Article</a>
+      </div>
+    </div>
   </div>
-  </div>
+{% endfor %}
 </div>
 
-            {% endfor %}
 {% endblock %}

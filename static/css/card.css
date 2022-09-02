@@ -58,10 +58,11 @@
   color: #7699C2;
 }
 
-.card-title {
-overflow: hidden;
+card-title {
+    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+
 }
 
 .container-outer {

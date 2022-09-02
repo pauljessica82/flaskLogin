@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
 
-{% block title %} Create Post Page {% endblock %}
-
+{% block title %} Create Post {% endblock %}
+ <style>
+.button {
+    background-color: 00bfff;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    cursor: pointer;
+    border-radius: 6px;}
+</style>
 {% block body %}
 
   <div class="container">
@@ -9,11 +20,13 @@
       <div class="col">
         <div class="card mt-4">
           <div class="card-body">
-            <form method=POST action="/create_post" class="form-group">
-              <input type="text" name="title" placeholder="Enter post title..." class="form-control">
+            <form method=POST action="/create_post" class="form-group" enctype="multipart/form-data">
+              <input name="myFile" type="file">
+              <br><br>
+              <input type="text" name="title" placeholder="Enter post title..." class="form-control"><br><br>
               <textarea name="body" class="form-control noresize mt-2" placeholder="Leave your post here..." rows="12"></textarea>
               <div class="row">
-                <div class="col-md-2 ml-auto">
+                <div class="col-md-2 ml-auto"><br>
                   <button type="submit" class="btn btn-success col-md-12 mt-2">Post</button>
                 </div>
               </div>

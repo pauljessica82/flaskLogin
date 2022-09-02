@@ -9,8 +9,18 @@ class SqlDatabase:
         except Error as e:
             print(e)
 
-    def delete_post(self, user_id):
-        delete = self.conn.cursor().execute('DELETE FROM messages WHERE id = ? ', (messages.id,))
+    def grab_blog_post_image(self, user_id):
+        pic = self.conn.cursor().execute('SELECT photo from messages WHERE messages.user_id = ?',
+                                         (user_id,)).fetchone()
+        return pic
+
+    def update_post(self, new_post):
+        self.conn.cursor().execute('''
+        UPDATE messages SET title = ? , body = ?  WHERE messages.id = ?
+        ''', new_post)
+        
+    def delete_post(self, post_id):
+        delete = self.conn.cursor().execute('DELETE FROM messages WHERE id = ? ', (post_id,))
         self.conn.commit()
         return delete
 
@@ -20,15 +30,14 @@ class SqlDatabase:
         return user_id
 
     def grab_my_posts(self, user_id):
-        posts = self.conn.cursor().execute('SELECT title, body, date FROM messages WHERE user_id = ?',
+        posts = self.conn.cursor().execute('SELECT title, body, date, photo, id FROM messages WHERE user_id = ?',
                                            (user_id,)).fetchall()
         return posts
 
     def grab_all_posts(self):
-        # messages = self.conn.cursor().execute('SELECT * FROM messages').fetchall()
         messages = self.conn.cursor().execute("""
         SELECT 
-            users.first_name, users.last_name, messages.title, messages.body, messages.date
+            users.first_name, users.last_name, messages.title, messages.body, messages.date, messages.photo
         FROM users INNER JOIN messages
         ON users.id  = messages.user_id; """).fetchall()
         return messages
@@ -45,11 +54,16 @@ class SqlDatabase:
         self.conn.commit()
         return self.conn.cursor().lastrowid
 
-    def create_message(self, user_id, title, body, date):
-        self.conn.cursor().execute("""INSERT INTO messages ( user_id, title, body, date) 
-                                VALUES(?, ?, ?, ?)""", (user_id, title, body, date,))
+    def create_message(self, user_id, title, body, date, photo):
+        self.conn.cursor().execute("""INSERT INTO messages ( user_id, title, body, date, photo) 
+                                VALUES(?, ?, ?, ?, ?)""", (user_id, title, body, date, photo))
         self.conn.commit()
         return self.conn.cursor().lastrowid
+    
+    def grab_user_info(self, user_id):
+        user = self.conn.cursor().execute('SELECT first_name, last_name FROM users WHERE id = ?', (user_id,)).fetchall()
+        return user
+        
 
 
 def main():
@@ -69,11 +83,12 @@ def main():
                                     title text NOT NULL,
                                     body text NOT NULL, 
                                     date text NOT NULL,
+                                    photo blob NOT NULL, 
                                     FOREIGN KEY (user_id) REFERENCES users (id)
                                 );"""
     database = SqlDatabase('login.db')
     database.create_table(sql_create_user_table)
-    database.create_table(sql_create_messages_table) 
+    database.create_table(sql_create_messages_table)
 
 
 if __name__ == '__main__':

@@ -7,3 +7,6 @@ static/projects/images/projects.json
 Dockerfile
 *.pyc
 *Lib
+login.db
+static/uploads/login.db
+*.db

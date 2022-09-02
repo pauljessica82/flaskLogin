@@ -1,16 +1,73 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 
-{% block title %} My Blog Page {% endblock %}
+{% block head %}
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/projects.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/card.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/chip.css') }}">
+{% endblock %}
 
 {% block body %}
 
-<H1>ALL POSTS</H1>
+<style>
+  .card-body {
+     overflow: hidden;
+     white-space: nowrap;
+     text-overflow: ellipsis;
+     text-align: center
+}
+ #titleid {
+     overflow: hidden;
+     white-space: nowrap;
+     text-overflow: ellipsis;
+     text-align: center;
+     font-weight: bold;
+     text-transform: uppercase;
+}
+
+</style>
+
+<H1> &nbsp; MY POSTS</H1>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+
+ {% for post in posts %}
+  <div class="col">
+    <div class="card">
+       <div class="card-image waves-effect waves-block waves-light">
+            <img class="card-image activator" src="static/uploads/{{post[3]}}" />
+        </div>
+      <div class="card-body">
+        <h5 class="card-title" id="titleid">  {{ post[0] }}</h5>
+          <h6 class="card-text"> Date Created: {{ post[2] }}</h6><br>
+           <a class="btn btn-primary" href="/edit?title={{post[0]}}&post={{post[1]}}&_id={{post[4]}}">Update</a>
+          <a class="btn btn-danger" href="/delete">Delete</a>
+
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}
+
 <div class="container">
     <div class="row">
       <div class="col">
         <div class="card mt-4">
+
+        </div>
           <div class="card-body">
             {% for post in posts %}
+               <div class="card-image waves-effect waves-block waves-light">
+            <img class="card-image activator" src="static/uploads/{{post[3]}}" />
               <div class="card mt-3">
                 <div class="card-header">
                   <div class="row">
@@ -40,4 +97,3 @@
   </div>
 
 
-{% endblock %}

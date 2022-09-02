@@ -1,17 +1,21 @@
 import os
 
-from flask import Flask, request, render_template, redirect, url_for, session, json
+from io import BytesIO, StringIO
+
+from flask import Flask, request, render_template, redirect, url_for, session, json, send_file
+
+from werkzeug.utils import secure_filename
 
 from datetime import date as dt
 
 from utils.sql_db import SqlDatabase
+
 # from utils.excel_db import ExcelDatabase as exceldb
 
 # import openpyxl as xl
 
 app = Flask(__name__)
 app.secret_key = "__privatekey__"
-
 
 database = SqlDatabase('utils/login.db')
 
@@ -118,7 +122,22 @@ def redirect_anon(func_view):
 @app.route('/dashboard', methods=['POST', 'GET'])
 @redirect_anon
 def dashboard():
-    return render_template('user_dashboard.html')
+    user_id = user()
+    print(user_id)
+    user_info = database.grab_user_info(user_id)
+    print(user_info)
+    name = user_info[0]
+    return render_template('user_dashboard.html', name=name)
+
+
+UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', 'upload-folder')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/create_post', methods=['POST', 'GET'])
@@ -126,13 +145,23 @@ def dashboard():
 def create_post():
     if request.method == 'POST':
         user_id = user()
+        img = request.files['myFile']
+        print(img.filename)
+        if img and allowed_file(img.filename):
+            filename = secure_filename(img.filename)
+            img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            print(img.filename)
+            print("Image Saved")
+
         title = request.form.get('title')
         body = request.form.get('body')
+        photo = img.filename
         if not (title and body):
             return render_template('create_post.html', info='You are missing one or more fields')
         else:
             date = dt.today().strftime("%B %d, %Y")
-            database.create_message(user_id, title, body, date)
+            database.create_message(user_id, title, body, date, photo)
             return redirect(url_for('articles'))
     return render_template('create_post.html')
 
@@ -141,15 +170,46 @@ def create_post():
 @redirect_anon
 def articles():
     user_id = user()
+    print("user: " + str(user_id))
+    user_info = database.grab_user_info(user_id)
+    print(user_info)
+    name = user_info[0]
     posts = database.grab_my_posts(user_id)
     if not posts:
-        return render_template('user_dashboard.html', info="No posts to show!! Please Create New Post")
+        return render_template('user_dashboard.html', info="No posts to show!! Please Create New Post", name=name)
     return render_template('my_posts.html', posts=posts)
 
 
-@app.route('/update')
+@app.route('/edit')
 @redirect_anon
 def edit_post():
+    old_title = request.args.get('title')
+    old_post = request.args.get('post')
+    post_id = request.args.get('_id')
+    session['post_id'] = post_id
+    print(old_title, old_post, post_id)
+
+    return render_template('update_post.html', old_title=old_title, old_post=old_post)
+
+
+@app.route('/update', methods=['POST', 'GET'])
+@redirect_anon
+def update_post():
+    if request.method == 'POST':
+        title = request.form.get('new_title')
+        post = request.form.get('new_post')
+        post_id = session.get('post_id')
+
+        new_post = (title, post, post_id)
+        print(new_post)
+
+        if not (title and post):
+            return render_template('update_post.html', info='You are missing one or more fields')
+        else:
+            database.update_post(new_post)
+            print("Update successful")
+            return redirect(url_for('articles'))
+
     return render_template('update_post.html')
 
 
@@ -157,15 +217,19 @@ def edit_post():
 @redirect_anon
 def delete_post():
     user_id = user()
-    database.delete_post(user_id)
+    user_posts = database.grab_my_posts(user_id)
+    for post in user_posts:
+        post_id = post[4]
+    database.delete_post(post_id)
+
+    print("deleted post")
     return redirect(url_for('articles'))
 
 
 @app.route('/blog')
 def blog_posts():
-    data = get_static_json("static/projects/projects.json")['projects']
     posts = database.grab_all_posts()
-    return render_template('index.html', all_posts=posts, projects=data)
+    return render_template('index.html', all_posts=posts)
 
 
 @app.route('/login', methods=['POST', 'GET'])
