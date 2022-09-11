@@ -6,13 +6,13 @@ from psycopg2 import errors
 
 class SqlDatabase:
     def __init__(self, db_file):
-        try:
-            self.conn = sqlite3.connect(db_file, check_same_thread=False)
-            # self.conn = psycopg2.connect(
-            #     database=db_file
-            #     )
-        except Error as e:
-            print(e)
+        # try:
+            # self.conn = sqlite3.connect(db_file, check_same_thread=False)
+        self.conn = psycopg2.connect(
+            database=db_file
+            )
+        # except Error as e:
+        #     print(e)
 
     def grab_blog_post_image(self, user_id):
         pic = self.conn.cursor().execute('SELECT photo from messages WHERE messages.user_id = ?',
