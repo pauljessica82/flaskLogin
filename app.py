@@ -18,8 +18,8 @@ app = Flask(__name__)
 app.secret_key = "__privatekey__"
 app.config['DATABASE_URL'] = os.getenv('DATABASE_URL')
 
-# database = SqlDatabase('utils/login.db')
-database = SqlDatabase(os.getenv('DATABASE_URL'))
+database = SqlDatabase('utils/login.db')
+# database = SqlDatabase(os.getenv('DATABASE_URL'))
 
 
 # landing pages and functions
