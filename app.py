@@ -231,7 +231,7 @@ def delete_post():
 @app.route('/blog')
 def blog_posts():
     posts = database.grab_all_posts()
-    return render_template('index.html', all_posts=post)
+    return render_template('index.html', all_posts=posts)
 
 
 @app.route('/blog_detail')
