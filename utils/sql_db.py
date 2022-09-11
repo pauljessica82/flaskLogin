@@ -11,7 +11,7 @@ class SqlDatabase:
             # self.conn = psycopg2.connect(
             #     database=db_file
             #     )
-        except Exception as e:
+        except Error as e:
             print(e)
 
     def grab_blog_post_image(self, user_id):
