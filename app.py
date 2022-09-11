@@ -16,6 +16,7 @@ from utils.sql_db import SqlDatabase
 
 app = Flask(__name__)
 app.secret_key = "__privatekey__"
+app.config['DATABASE_URL'] = os.getenv('DATABASE_URL')
 
 database = SqlDatabase('utils/login.db')
 
@@ -229,7 +230,12 @@ def delete_post():
 @app.route('/blog')
 def blog_posts():
     posts = database.grab_all_posts()
-    return render_template('index.html', all_posts=posts)
+    return render_template('index.html', all_posts=post)
+
+
+@app.route('/blog_detail')
+def full_article():
+    return render_template('post_details.html')
 
 
 @app.route('/login', methods=['POST', 'GET'])

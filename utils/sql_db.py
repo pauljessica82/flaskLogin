@@ -1,12 +1,17 @@
-import sqlite3
-from sqlite3 import Error
+# import sqlite3
+# from sqlite3 import Error
+import psycopg2
+from psycopg2 import errors
 
 
 class SqlDatabase:
     def __init__(self, db_file):
         try:
-            self.conn = sqlite3.connect(db_file, check_same_thread=False)
-        except Error as e:
+            # self.conn = sqlite3.connect(db_file, check_same_thread=False)
+            self.conn = psycopg2.connect(
+                database=db_file
+                )
+        except Exception as e:
             print(e)
 
     def grab_blog_post_image(self, user_id):
@@ -46,7 +51,7 @@ class SqlDatabase:
     def create_table(self, create_table_sql):
         try:
             self.conn.cursor().execute(create_table_sql)
-        except Error as e:
+        except Exception as e:
             print(e)
 
     def insert_user(self, user):
