@@ -16,10 +16,9 @@ from utils.sql_db import SqlDatabase
 
 app = Flask(__name__)
 app.secret_key = "__privatekey__"
-app.config['DATABASE_URL'] = os.getenv('DATABASE_URL')
 
-database = SqlDatabase('utils/login.db')
-# database = SqlDatabase(os.getenv('DATABASE_URL'))
+# database = SqlDatabase('utils/login.db')
+database = SqlDatabase()
 
 
 # landing pages and functions
@@ -99,7 +98,7 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
         confirmed_password = request.form.get('confirmed_password')
-        user = (first_name, last_name, email, phone, username, password)
+        user = (first_name, last_name, phone, email, username, password)
         if not first_name and last_name and email and phone and username and password:
             return render_template('create_user.html', info="You are missing one or more fields")
         else:
