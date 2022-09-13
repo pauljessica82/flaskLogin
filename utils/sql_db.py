@@ -10,7 +10,7 @@ import sqlalchemy as sa
 class SqlDatabase:
     def __init__(self):
         try:
-            engine = create_engine(os.getenv('DATABASE_URL'))
+            engine = create_engine(os.getenv('SQLALCHEMY_DATABASE_URL'))
             self.conn = engine.connect()
         except Exception as e:
             print(e)
