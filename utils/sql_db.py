@@ -20,6 +20,11 @@ class SqlDatabase:
         pic = self.conn.execute(sa.text(q), {'user_id': (user_id,)}).fetchone()
         return pic
 
+    def grab_post_content(self, post_id):
+        q = 'SELECT body, photo from messages WHERE messages.id = :post_id'
+        post = self.conn.execute(sa.text(q), {'post_id': (post_id,)}).fetchone()
+        return post
+
     def update_post(self, new_post):
         q = 'UPDATE messages SET title = :title , body = :body  WHERE messages.id = :msg_id'
         self.conn.execute(sa.text(q), {'title': new_post[0], 'body': new_post[1], 'msg_id': new_post[2]})
@@ -41,8 +46,8 @@ class SqlDatabase:
     def grab_all_posts(self):
         q = """
             SELECT 
-                users.first_name, users.last_name, messages.title, messages.body, messages.date, messages.photo
-            FROM users INNER JOIN messages
+                users.first_name, users.last_name, messages.title, messages.body, messages.date, messages.photo, 
+            messages.id FROM users INNER JOIN messages
             ON users.id  = messages.user_id; """
         messages = self.conn.execute(sa.text(q)).fetchall()
         return messages

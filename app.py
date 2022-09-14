@@ -141,6 +141,19 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+@app.route('/post_detail')
+def post_content():
+    post_id = request.args.get('_id')
+    title = request.args.get('title')
+    first_name = request.args.get('authorfname')
+    last_name = request.args.get('authorlname')
+    author = [first_name, last_name]
+    body_and_photo = database.grab_post_content(post_id)
+    post = [title, author]
+    return render_template('post_details.html', title=title, author=author, body=body_and_photo[0],
+                           photo=body_and_photo[1])
+
+
 @app.route('/create_post', methods=['POST', 'GET'])
 @redirect_anon
 def create_post():
@@ -173,7 +186,6 @@ def articles():
     user_id = user()
     print("user: " + str(user_id))
     user_info = database.grab_user_info(user_id)
-    print(user_info)
     name = user_info[0]
     posts = database.grab_my_posts(user_id)
     if not posts:
@@ -231,11 +243,6 @@ def delete_post():
 def blog_posts():
     posts = database.grab_all_posts()
     return render_template('index.html', all_posts=posts)
-
-
-@app.route('/blog_detail')
-def full_article():
-    return render_template('post_details.html')
 
 
 @app.route('/login', methods=['POST', 'GET'])

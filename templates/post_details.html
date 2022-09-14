@@ -1,0 +1,74 @@
+
+{% extends 'base2.html' %}
+{% block head %}
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/projects.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/card.css') }}">
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = 'css/chip.css') }}">
+{% endblock %}
+<!--<!doctype html>-->
+<!--<html lang="en" xmlns="http://www.w3.org/1999/html">-->
+
+<!--  <head>-->
+
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <title>Post Detail</title>-->
+<!--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">-->
+
+<!--  </head>-->
+
+{% block body %}
+  <div class="navbar-ul">
+
+    <ul id="navbar-list" class="list-inline">
+
+        <a class="navbar-brand color: #DA70D6 !important" href="{{ url_for('blog_posts') }}">Tech Journal</a>
+
+<!--        <li><a class="navbar-ref" href="{{ url_for('hello') }}">Home</a></li>-->
+        <li><a class="navbar-ref" href="{{ url_for('valid_login') }}">Login</a></li>
+        <li><a class="navbar-ref" href="{{ url_for('register') }}">Register</a></li>
+        <li><a class="navbar-ref" href="{{ url_for('dashboard') }}">My Dashboard</a></li>
+        <a class="navbar-brand" href="{{ url_for('logged_out') }}"><font color="red">Logout</font></a>
+
+    </ul>
+</div>
+  <div>
+      <center>
+  <body>
+  <h1 style="background-color:grey; text-transform:capitalize" class="fs-3xl m:fs-4xl l:fs-5xl fw-bold s:fw-heavy lh-tight mb-2 medium">
+    {{title }}
+  </h1>
+
+  <div class="mb-0">
+      <span class="text-muted">by {{ author[0] }} {{ author[1] }}
+      </span>
+  </div>
+
+  <img src= "static\uploads\{{ photo }}"  width="500" height="250" style="object-fit: contain;  "
+       class="card-img-top m-0 p-0 embed-responsive-item rounded" alt="Cover image for blog post" >
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous">
+
+    </script>
+
+  <br><br><br>
+
+  <p>
+      {{ body }}
+
+  </p>
+  </body>
+      </center>
+</div>
+
+{% endblock %}
+<!--</html>-->

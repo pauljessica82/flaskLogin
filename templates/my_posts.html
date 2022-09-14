@@ -34,8 +34,24 @@
 }
 
 </style>
+ <div class="navbar-ul">
 
-<H1> &nbsp; MY POSTS</H1>
+    <ul id="navbar-list" class="list-inline">
+
+        <a class="navbar-brand color: #DA70D6 !important" href="{{ url_for('blog_posts') }}">Tech Journal</a>
+
+<!--        <li><a class="navbar-ref" href="{{ url_for('hello') }}">Home</a></li>-->
+        <li><a class="navbar-ref" href="{{ url_for('valid_login') }}">Login</a></li>
+        <li><a class="navbar-ref" href="{{ url_for('register') }}">Register</a></li>
+        <li><a class="navbar-ref" href="{{ url_for('dashboard') }}">My Dashboard</a></li>
+        <a class="navbar-brand" href="{{ url_for('logged_out') }}"><font color="red">Logout</font></a>
+
+    </ul>
+</div>
+<div>
+    <H1> <font color="green"><center> My Tech Journal</center></font> </H1>
+</div>
+
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
 
@@ -48,7 +64,7 @@
       <div class="card-body">
         <h5 class="card-title" id="titleid">  {{ post[0] }}</h5>
           <h6 class="card-text"> Date Created: {{ post[2] }}</h6><br>
-           <a class="btn btn-primary" href="/edit?title={{post[0]}}&post={{post[1]}}&_id={{post[4]}}">Update</a>
+           <a class="btn btn-primary" href="/edit?title={{post[0]}}&_id={{post[4]}}">Update</a>
           <a class="btn btn-danger" href="/delete">Delete</a>
 
       </div>
