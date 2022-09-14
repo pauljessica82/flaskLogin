@@ -127,7 +127,7 @@ def dashboard():
     return render_template('user_dashboard.html', name=name)
 
 
-UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER', 'upload-folder')
+UPLOAD_FOLDER = os.getenv('UPLOAD_FOLDER')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
