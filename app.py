@@ -12,7 +12,7 @@ from utils.sql_db import SqlDatabase
 
 app = Flask(__name__)
 app.secret_key = "__privatekey__"
-
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 # database = SqlDatabase('utils/login.db')
 database = SqlDatabase()
 
@@ -223,13 +223,12 @@ def update_post():
     return render_template('update_post.html')
 
 
-@app.route('/delete')
+@app.route('/delete', methods=['POST', 'GET'])
 @redirect_anon
 def delete_post():
     user_id = user()
+    post_id = request.args.get('_id')
     user_posts = database.grab_my_posts(user_id)
-    for post in user_posts:
-        post_id = post[4]
     database.delete_post(post_id)
 
     print("deleted post")
