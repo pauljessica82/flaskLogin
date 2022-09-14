@@ -1,6 +1,5 @@
 import os
 
-from io import BytesIO, StringIO
 
 from flask import Flask, request, render_template, redirect, url_for, session, json, send_file
 
@@ -10,9 +9,6 @@ from datetime import date as dt
 
 from utils.sql_db import SqlDatabase
 
-# from utils.excel_db import ExcelDatabase as exceldb
-
-# import openpyxl as xl
 
 app = Flask(__name__)
 app.secret_key = "__privatekey__"
@@ -197,8 +193,9 @@ def articles():
 @redirect_anon
 def edit_post():
     old_title = request.args.get('title')
-    old_post = request.args.get('post')
+    # old_post = request.args.get('post')
     post_id = request.args.get('_id')
+    old_post = database.grab_post_content(post_id)[0]
     session['post_id'] = post_id
     print(old_title, old_post, post_id)
 

@@ -18,11 +18,13 @@ class SqlDatabase:
     def grab_blog_post_image(self, user_id):
         q = 'SELECT photo from messages WHERE messages.user_id = :user_id'
         pic = self.conn.execute(sa.text(q), {'user_id': (user_id,)}).fetchone()
+
         return pic
 
     def grab_post_content(self, post_id):
         q = 'SELECT body, photo from messages WHERE messages.id = :post_id'
         post = self.conn.execute(sa.text(q), {'post_id': (post_id,)}).fetchone()
+
         return post
 
     def update_post(self, new_post):
@@ -36,11 +38,13 @@ class SqlDatabase:
     def grab_user_id(self, username, password):
         q = 'SELECT id FROM users where username = :username and password = :password'
         user_id = self.conn.execute(sa.text(q), {'username': username, 'password': password}).fetchone()
+
         return user_id
 
     def grab_my_posts(self, user_id):
         q = 'SELECT title, body, date, photo, id FROM messages WHERE user_id = :user_id'
         posts = self.conn.execute(sa.text(q), {'user_id': (user_id,)}).fetchall()
+
         return posts
 
     def grab_all_posts(self):
@@ -50,6 +54,7 @@ class SqlDatabase:
             messages.id FROM users INNER JOIN messages
             ON users.id  = messages.user_id; """
         messages = self.conn.execute(sa.text(q)).fetchall()
+
         return messages
 
     def create_table(self, create_table_sql):
@@ -63,14 +68,17 @@ class SqlDatabase:
                                    VALUES :user """
         self.conn.execute(sa.text(q), {'user': user})
 
+
     def create_message(self, user_id, title, body, date, photo):
         q = """INSERT INTO messages ( user_id, title, body, date, photo) 
                                     VALUES(:user_id, :title, :body, :date, :photo)"""
         self.conn.execute(sa.text(q), {'user_id': user_id, 'title': title, 'body': body, 'date': date, 'photo': photo})
 
+
     def grab_user_info(self, user_id):
         q = 'SELECT first_name, last_name FROM users WHERE id = :id'
         user = self.conn.execute(sa.text(q), {'id': (user_id,)}).fetchall()
+
         return user
 
 
